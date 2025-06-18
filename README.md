@@ -16,7 +16,8 @@ Este proyecto implementa un sistema completo de gestión de programas de fidelid
 
 El sistema sigue principios de diseño orientado a objetos con separación clara de responsabilidades:
 
-[!NOTE] WIP, probablemente cambie en futuras versiones. [!NOTE]
+> [!NOTE]
+> WIP
 
 ```
 src/
@@ -59,11 +60,12 @@ src/
 3. **Bonus streak**: +10 puntos por 3 compras seguidas en el mismo día.
 4. **Validaciones**: Correo electrónico válido, montos positivos.
 
-[!NOTE] Se hacen las siguientes asunciones con respecto del bonus: [!NOTE]
+> [!NOTE]
+> Se hacen las siguientes asunciones con respecto del bonus:
 
 1. Para aplicar el bono se utiliza la siguiente fórmula:
 
-   $$ \text{pts\_por\_compra} = \left(\text{pts\_base} + \text{pts\_bono}\right) \cdot \text{multiplicador}$$
+   $$ \text{pts por compra} = \left(\text{pts base} + \text{pts bono}\right) \cdot \text{multiplicador}$$
 
    Es decir, el bono también es afectado por el multiplicador del nivel actual del cliente.
 
@@ -122,26 +124,28 @@ El reporte de cobertura se genera en `target/site/jacoco/index.html`
 ### Ejemplo de salida de tests
 
 ```
-[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0
-
-Results:
-Tests run: 25, Failures: 0, Errors: 0, Skipped: 0
-
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.tarea3.modelo.ClienteTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.268 s -- in com.tarea3.modelo.ClienteTest
+[INFO] Running com.tarea3.modelo.NivelTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.030 s -- in com.tarea3.modelo.NivelTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
 [INFO] --- jacoco:0.8.11:report (report) @ inf331-tarea3 ---
-[INFO] Loading execution data file target/jacoco.exec
-[INFO] Analyzed bundle 'Tarea 3: Tarjeta de Fidelidad Gamificada' with 8 classes
-
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running com.tienda.fidelidad.service.ClienteServiceTest
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
-Running com.tienda.fidelidad.service.CompraServiceTest  
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
-Running com.tienda.fidelidad.service.PuntosServiceTest
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
-Running com.tienda.fidelidad.model.ClienteTest
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Loading execution data file C:\workspace\inf331-tarea3\target\jacoco.exec
+[INFO] Analyzed bundle 'Tarea 3: Tarjeta de Fidelidad Gamificada' with 3 classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.289 s
+[INFO] Finished at: 2025-06-18T19:29:03-04:00
+[INFO] ------------------------------------------------------------------------
 ```
 
 ## Medición de Cobertura
