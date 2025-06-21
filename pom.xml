@@ -122,10 +122,27 @@
                   <mainClass>com.tarea3.App</mainClass>
                 </transformer>
               </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/LICENSE*</exclude>
+                    <exclude>META-INF/NOTICE*</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/MyckollWinchester/inf331-tarea3</url>
+    </repository>
+  </distributionManagement>
 </project>
