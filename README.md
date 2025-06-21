@@ -1,5 +1,8 @@
 # INF331 - Tarea 3: Tarjeta de Fidelidad Gamificada
 
+> [!WARNING]
+> El cliente aún no está implementado, pero se pueden realizar los tests de los modelos y servicios (usando `mvn test`).
+
 Sistema de gestión de programa de fidelidad para tiendas de conveniencia desarrollado en Java con arquitectura orientada a objetos y pruebas unitarias.
 
 Este proyecto implementa un sistema completo de gestión de programas de fidelidad que permite:
