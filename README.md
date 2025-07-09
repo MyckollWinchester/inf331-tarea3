@@ -50,6 +50,7 @@ src/
     │   ├── ClienteRepositorioTest.java
     │   └── CompraRepositorioTest.java
     └── servicio/
+        ├── ClienteServicioTest.java
         └── CompraServicioTest.java
 ```
 
@@ -275,6 +276,8 @@ Las pruebas están organizadas por capas y responsabilidades:
 
 - **Pruebas Unitarias**: Cada clase se prueba de forma aislada, usando dobles de prueba cuando es necesario.
 - **Pruebas Parametrizadas**: Se utilizan para validar múltiples escenarios y combinaciones de entrada con JUnit 5.
+- **Pruebas de Valor Límite**: Se enfocan en entradas críticas como montos de compra, correos electrónicos y puntos.
+- **Test Driven Development (TDD)**: Se siguió un enfoque TDD para el desarrollo de las clases de modelo y servicio, asegurando que cada funcionalidad esté cubierta por pruebas desde el inicio.
 - **Cobertura de Código**: Se mide con JaCoCo, excluyendo la capa CLI y la clase principal.
 
 ## Tecnologías Utilizadas
