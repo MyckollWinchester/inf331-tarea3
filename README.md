@@ -285,7 +285,6 @@ Las pruebas están organizadas por capas y responsabilidades:
 - **Java 21**: Lenguaje de programación principal.
 - **Maven 3.11.0**: Gestión de dependencias y construcción.
 - **JUnit 5.10.1**: Framework de pruebas unitarias.
-- **AssertJ 3.24.2**: Biblioteca de assertions fluidas.
 - **JaCoCo 0.8.11**: Medición de cobertura de código.
 - **JavaMail 1.6.2**: Validación de formato de correo electrónico.
 
