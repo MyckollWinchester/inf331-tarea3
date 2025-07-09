@@ -16,7 +16,7 @@ Este proyecto implementa un sistema completo de gestión de programas de fidelid
 
 Se recomienda abrir el diagrama como imagen en un visor externo.
 
-![Diagrama de Clases](docs/diagrama_clases.png)
+![Diagrama de Clases](docs/diagrama-clases.png)
 
 ### Arquitectura
 
