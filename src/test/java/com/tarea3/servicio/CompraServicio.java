@@ -2,6 +2,7 @@ package com.tarea3.servicio;
 
 import com.tarea3.modelo.Cliente;
 import com.tarea3.modelo.Compra;
+import com.tarea3.repositorio.CompraRepositorio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,7 @@ import java.util.List;
 class CompraServicioTest {
     
     private CompraServicio compraServicio;
+    private CompraRepositorio compraRepositorio;
     private Cliente clienteBronce;
     private Cliente clientePlata;
     private Cliente clienteOro;
@@ -21,7 +23,8 @@ class CompraServicioTest {
     
     @BeforeEach
     void setUp() {
-        compraServicio = new CompraServicio();
+        compraRepositorio = new CompraRepositorio();
+        compraServicio = new CompraServicio(compraRepositorio);
         
         clienteBronce = new Cliente(1, "Cliente Bronce", "bronce@test.com");
         

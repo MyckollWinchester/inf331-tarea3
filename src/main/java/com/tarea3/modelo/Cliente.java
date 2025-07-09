@@ -11,7 +11,6 @@ public class Cliente {
     private String correo;
     private int puntos;
     private Nivel nivel;
-    private int streakDias;
     
     public Cliente(int id, String nombre, String correo) {
         validarDatos(id, nombre, correo);
@@ -21,7 +20,6 @@ public class Cliente {
         this.correo = correo;
         this.puntos = 0;
         this.nivel = Nivel.BRONCE;
-        this.streakDias = 0;
     }
     
     private void validarDatos(int id, String nombre, String correo) {
@@ -61,15 +59,12 @@ public class Cliente {
         this.nivel = Nivel.calcularNivel(this.puntos);
     }
     
-    // Getters
     public int getId() { return id; }
     public String getNombre() { return nombre; }
     public String getCorreo() { return correo; }
     public int getPuntos() { return puntos; }
     public Nivel getNivel() { return nivel; }
-    public int getStreakDias() { return streakDias; }
     
-    // Setters para actualización
     public void setNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
@@ -82,10 +77,6 @@ public class Cliente {
             throw new IllegalArgumentException("El correo debe ser válido (contener @)");
         }
         this.correo = correo;
-    }
-    
-    public void setStreakDias(int streakDias) {
-        this.streakDias = Math.max(0, streakDias);
     }
     
     @Override
@@ -103,7 +94,7 @@ public class Cliente {
     
     @Override
     public String toString() {
-        return String.format("Cliente{id=%d, nombre='%s', correo='%s', puntos=%d, nivel=%s, streak=%d}", 
-                           id, nombre, correo, puntos, nivel, streakDias);
+        return String.format("Cliente{id=%d, nombre='%s', correo='%s', puntos=%d, nivel=%s}", 
+                           id, nombre, correo, puntos, nivel);
     }
 }

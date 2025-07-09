@@ -1,0 +1,279 @@
+@startuml Sistema de Fidelidad - Diagrama de Clases
+
+!theme aws-orange
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+title Sistema de Gestión de Fidelidad - Diagrama de Clases
+
+package "cli" <<Folder>> #LightBlue {
+    class App {
+        +main(args: String[]): void
+        -crearDatosDemo(clienteServicio: ClienteServicio, compraServicio: CompraServicio): void
+    }
+
+    class MenuPrincipal {
+        -clienteServicio: ClienteServicio
+        -compraServicio: CompraServicio
+        -clienteMenu: ClienteMenu
+        -compraMenu: CompraMenu
+        --
+        +MenuPrincipal(clienteServicio: ClienteServicio, compraServicio: CompraServicio)
+        +ejecutar(): void
+        -mostrarMenuPrincipal(): void
+        -mostrarPuntosNivelCliente(): void
+        -mostrarResumenGeneral(): void
+        -mostrarInformacionCliente(cliente: Cliente): void
+        -obtenerProgresoNivel(cliente: Cliente): String
+    }
+
+    class ClienteMenu {
+        -clienteServicio: ClienteServicio
+        --
+        +ClienteMenu(clienteServicio: ClienteServicio)
+        +mostrarMenu(): void
+        -agregarCliente(): void
+        -listarClientes(): void
+        -buscarCliente(): void
+        -actualizarCliente(): void
+        -eliminarCliente(): void
+        -mostrarEstadisticas(): void
+        -mostrarDetalleCliente(cliente: Cliente): void
+    }
+
+    class CompraMenu {
+        -compraServicio: CompraServicio
+        -clienteServicio: ClienteServicio
+        -formatter: DateTimeFormatter
+        --
+        +CompraMenu(compraServicio: CompraServicio, clienteServicio: ClienteServicio)
+        +mostrarMenu(): void
+        -registrarCompra(): void
+        -listarCompras(): void
+        -buscarCompra(): void
+        -comprasPorCliente(): void
+        -eliminarCompra(): void
+        -mostrarEstadisticas(): void
+        -leerFecha(prompt: String): LocalDate
+        -mostrarDetalleCompra(compra: Compra): void
+    }
+
+    class ConsoleUtils {
+        {static} -scanner: Scanner
+        {static} +RESET: String
+        {static} +RED: String
+        {static} +GREEN: String
+        {static} +BLUE: String
+        {static} +BOLD: String
+        --
+        {static} +leerString(prompt: String): String
+        {static} +leerEntero(prompt: String): int
+        {static} +leerEnteroPositivo(prompt: String): int
+        {static} +leerEnteroNoNegativo(prompt: String): int
+        {static} +leerOpcionMenu(prompt: String, min: int, max: int): int
+        {static} +confirmar(prompt: String): boolean
+        {static} +pausar(): void
+        {static} +limpiarPantalla(): void
+        {static} +mostrarExito(mensaje: String): void
+        {static} +mostrarError(mensaje: String): void
+        {static} +mostrarTitulo(titulo: String): void
+    }
+}
+
+package "modelo" <<Folder>> #LightGreen {
+    class Cliente {
+        -id: int
+        -nombre: String
+        -correo: String
+        -puntos: int
+        -nivel: Nivel
+        --
+        +Cliente(id: int, nombre: String, correo: String)
+        -validarDatos(id: int, nombre: String, correo: String): void
+        -esEmailValido(email: String): boolean
+        +agregarPuntos(puntosNuevos: int): void
+        +getId(): int
+        +getNombre(): String
+        +getCorreo(): String
+        +getPuntos(): int
+        +getNivel(): Nivel
+        +setNombre(nombre: String): void
+        +setCorreo(correo: String): void
+        +equals(o: Object): boolean
+        +hashCode(): int
+        +toString(): String
+    }
+
+    class Compra {
+        -idCompra: int
+        -idCliente: int
+        -monto: int
+        -fecha: LocalDate
+        --
+        +Compra(idCompra: int, idCliente: int, monto: int, fecha: LocalDate)
+        -validarDatos(idCompra: int, idCliente: int, monto: int, fecha: LocalDate): void
+        +calcularPuntosBase(): int
+        +calcularPuntosTotales(cliente: Cliente): int
+        +calcularPuntosTotales(cliente: Cliente, aplicarBonus: boolean): int
+        +esMismoDia(otraFecha: LocalDate): boolean
+        +getIdCompra(): int
+        +getIdCliente(): int
+        +getMonto(): int
+        +getFecha(): LocalDate
+        +setMonto(monto: int): void
+        +setFecha(fecha: LocalDate): void
+        +equals(o: Object): boolean
+        +hashCode(): int
+        +toString(): String
+    }
+
+    enum Nivel {
+        BRONCE(0, 499, 1.0)
+        PLATA(500, 1499, 1.2)
+        ORO(1500, 2999, 1.5)
+        PLATINO(3000, Integer.MAX_VALUE, 2.0)
+        --
+        -minPuntos: int
+        -maxPuntos: int
+        -multiplicador: double
+        --
+        +getMinPuntos(): int
+        +getMaxPuntos(): int
+        +getMultiplicador(): double
+        {static} +calcularNivel(puntos: int): Nivel
+    }
+}
+
+package "repositorio" <<Folder>> #LightYellow {
+    interface "RepositorioBase<T>" as RepositorioBase {
+        +guardar(entidad: T): T
+        +buscarPorId(id: int): Optional<T>
+        +obtenerTodos(): List<T>
+        +actualizar(entidad: T): T
+        +eliminar(id: int): boolean
+        +existePorId(id: int): boolean
+        +contar(): int
+        +limpiar(): void
+    }
+
+    class ClienteRepositorio {
+        -clientes: Map<Integer, Cliente>
+        -siguienteId: int
+        --
+        +ClienteRepositorio()
+        +generarSiguienteId(): int
+        +buscarPorCorreo(correo: String): Optional<Cliente>
+        +existePorCorreo(correo: String): boolean
+        +guardar(cliente: Cliente): Cliente
+        +buscarPorId(id: int): Optional<Cliente>
+        +obtenerTodos(): List<Cliente>
+        +actualizar(cliente: Cliente): Cliente
+        +eliminar(id: int): boolean
+        +existePorId(id: int): boolean
+        +contar(): int
+        +limpiar(): void
+    }
+
+    class CompraRepositorio {
+        -compras: Map<Integer, Compra>
+        -siguienteId: int
+        --
+        +CompraRepositorio()
+        +generarSiguienteId(): int
+        +obtenerPorCliente(idCliente: int): List<Compra>
+        +obtenerPorClienteYFecha(idCliente: int, fecha: LocalDate): List<Compra>
+        +obtenerPorRangoFechas(fechaInicio: LocalDate, fechaFin: LocalDate): List<Compra>
+        +eliminarPorCliente(idCliente: int): int
+        +contarPorCliente(idCliente: int): int
+        +guardar(compra: Compra): Compra
+        +buscarPorId(id: int): Optional<Compra>
+        +obtenerTodas(): List<Compra>
+        +actualizar(compra: Compra): Compra
+        +eliminar(id: int): boolean
+        +existePorId(id: int): boolean
+        +contar(): int
+        +limpiar(): void
+    }
+}
+
+package "servicio" <<Folder>> #LightCoral {
+    class ClienteServicio {
+        -clienteRepositorio: ClienteRepositorio
+        --
+        +ClienteServicio(clienteRepositorio: ClienteRepositorio)
+        +crearCliente(nombre: String, correo: String): Cliente
+        +crearCliente(id: int, nombre: String, correo: String): Cliente
+        +buscarPorId(id: int): Optional<Cliente>
+        +buscarPorCorreo(correo: String): Optional<Cliente>
+        +obtenerTodos(): List<Cliente>
+        +actualizarNombre(id: int, nuevoNombre: String): Cliente
+        +actualizarCorreo(id: int, nuevoCorreo: String): Cliente
+        +agregarPuntos(id: int, puntos: int): Cliente
+        +eliminarCliente(id: int): boolean
+        +existeCliente(id: int): boolean
+        +contarClientes(): int
+    }
+
+    class CompraServicio {
+        -compraRepositorio: CompraRepositorio
+        --
+        +CompraServicio(compraRepositorio: CompraRepositorio)
+        +registrarCompra(idCliente: int, monto: int, fecha: LocalDate): Compra
+        +registrarCompra(idCompra: int, idCliente: int, monto: int, fecha: LocalDate): Compra
+        +buscarPorId(id: int): Optional<Compra>
+        +obtenerTodas(): List<Compra>
+        +obtenerPorCliente(idCliente: int): List<Compra>
+        +eliminarCompra(id: int): boolean
+        +procesarCompra(cliente: Cliente, monto: int, fecha: LocalDate): int
+        +procesarCompra(idCompra: int, cliente: Cliente, monto: int, fecha: LocalDate): int
+        +calcularPuntosConBonus(compra: Compra, cliente: Cliente, historialCompras: List<Compra>): int
+        +debeAplicarBonus(compraNueva: Compra, cliente: Cliente, historialCompras: List<Compra>): boolean
+        +contarComprasEnFecha(cliente: Cliente, fecha: LocalDate, historialCompras: List<Compra>): long
+    }
+}
+
+' Relaciones entre entidades del modelo
+Cliente ||--|| Nivel : "tiene"
+Compra }|--|| Cliente : "pertenece a"
+
+' Relaciones entre repositorios y entidades
+ClienteRepositorio --|> RepositorioBase : "<<bind>>\n<Cliente>"
+CompraRepositorio --|> RepositorioBase : "<<bind>>\n<Compra>"
+
+ClienteRepositorio "1" *-- "*" Cliente : "gestiona"
+CompraRepositorio "1" *-- "*" Compra : "gestiona"
+
+' Relaciones entre servicios y repositorios
+ClienteServicio --> ClienteRepositorio : "usa"
+CompraServicio --> CompraRepositorio : "usa"
+
+' Relaciones entre CLI y servicios
+MenuPrincipal --> ClienteServicio : "usa"
+MenuPrincipal --> CompraServicio : "usa"
+MenuPrincipal --> ClienteMenu : "contiene"
+MenuPrincipal --> CompraMenu : "contiene"
+
+ClienteMenu --> ClienteServicio : "usa"
+CompraMenu --> CompraServicio : "usa"
+CompraMenu --> ClienteServicio : "usa"
+
+' Relaciones con utilities
+ClienteMenu ..> ConsoleUtils : "usa"
+CompraMenu ..> ConsoleUtils : "usa"
+MenuPrincipal ..> ConsoleUtils : "usa"
+
+' Punto de entrada
+App --> MenuPrincipal : "crea y ejecuta"
+App --> ClienteServicio : "configura"
+App --> CompraServicio : "configura"
+
+' Notas explicativas
+note right of Nivel : Enum que define los\nniveles de fidelidad\ncon multiplicadores
+
+note bottom of RepositorioBase : Interface genérica\npara operaciones CRUD\nbásicas
+
+note top of ConsoleUtils : Utilidades estáticas\npara interacción\ncon consola
+
+note left of App : Punto de entrada\nde la aplicación\ncon datos de demo
+
+@enduml

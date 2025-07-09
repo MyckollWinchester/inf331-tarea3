@@ -13,7 +13,6 @@ class ClienteTest {
         assertEquals("myckoll.winchester@usm.cl", cliente.getCorreo());
         assertEquals(0, cliente.getPuntos());
         assertEquals(Nivel.BRONCE, cliente.getNivel());
-        assertEquals(0, cliente.getStreakDias());
     }
 
     @Test

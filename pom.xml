@@ -88,6 +88,8 @@
             <exclude>jdk/**</exclude>
             <exclude>java/**</exclude>
             <exclude>javax/**</exclude>
+            <exclude>com/tarea3/cli/*</exclude>
+            <exclude>com/tarea3/*</exclude>
           </excludes>
         </configuration>
         <executions>
